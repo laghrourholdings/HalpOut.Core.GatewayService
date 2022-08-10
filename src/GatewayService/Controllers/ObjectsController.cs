@@ -8,14 +8,20 @@ namespace GatewayService.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class GatewayController : ControllerBase
+public class ObjectsController : ControllerBase
 {
     private readonly IObjectRepository _objectRepository;
     
-    public GatewayController(IObjectRepository objectRepository)
+    public ObjectsController(IObjectRepository objectRepository)
     {
         _objectRepository = objectRepository;
     }
     
     
+    [HttpPost()]
+    public async Task<IActionResult> CreateObject()
+    {
+        await _objectRepository.CreateAsync(null);
+        return Ok("");
+    }
 }

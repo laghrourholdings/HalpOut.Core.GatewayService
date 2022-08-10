@@ -1,7 +1,6 @@
 using CommonLibrary.Entities.InternalService;
-using CommonLibrary.Implementations.InternalService;
-using CommonLibrary.MassTransit;
-using CommonLibrary.Repository;
+using CommonLibrary.Extentions.MassTransit;
+using CommonLibrary.Repositories;
 using CommonLibrary.Settings;
 using GatewayService.Implementations;
 
@@ -11,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ServiceSettings>(builder.Configuration.GetSection("ServiceSettings"));
 builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQSettings"));
 builder.Services.AddMassTransitWithRabbitMq();
-builder.Services.AddScoped<IObjectRepository<IObject>, ObjectRepository>();
+builder.Services.AddScoped<IObjectRepository, ObjectRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

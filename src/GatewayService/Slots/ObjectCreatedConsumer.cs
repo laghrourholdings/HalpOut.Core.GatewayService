@@ -1,37 +1,24 @@
 ﻿using CommonLibrary.Contracts.Gateway_Internal_Contracts;
 using CommonLibrary.Entities.InternalService;
-using CommonLibrary.Implementations.InternalService;
-using CommonLibrary.Repository;
+using CommonLibrary.Repositories;
 using MassTransit;
 
 namespace GatewayService.Slots;
 
-public class ObjectCreatedConsumer : IConsumer<CreateObject>
+public class ObjectCreatedConsumer : IConsumer<CreateObjectResponse>
 {
     
-    private readonly IObjectRepository<IObject> _repository;
+    private readonly IObjectRepository _objectRepository;
     
-    public ObjectCreatedConsumer(IObjectRepository<IObject> repository)
+    public ObjectCreatedConsumer(IObjectRepository objectRepository)
     {
-        _repository = repository;
+        _objectRepository = objectRepository;
     }
     
-    public async Task Consume(ConsumeContext<CreateObject> context)
+    public async Task Consume(ConsumeContext<CreateObjectResponse> context)
     {
-        var message = context.Message;
-        // var item = await _repository.GetAsync(message.ItemId);
-        // if (item != null)
-        // {
-        //     return;
-        // }
-        // item = new CatalogItem()
-        // {
-        //     Id = message.ItemId,
-        //     Name = message.Name,
-        //     Description = message.Description
-        // };
-        Console.WriteLine($"Verification for: {message.obj.Id} created at: {message.obj.CreationDate} COMPLETED");
-        //await _repository.CreateAsync(item);
+        var message = context.Message.Payload;
+        Console.WriteLine($"Creation for: {message.Subject.Id} created at: {message.Subject.CreationDate} COMPLETED");
         await Task.CompletedTask;
     }
 }

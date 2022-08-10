@@ -1,13 +1,13 @@
 ﻿using System.Linq.Expressions;
 using CommonLibrary.Contracts.Gateway_Internal_Contracts;
 using CommonLibrary.Entities.InternalService;
-using CommonLibrary.Implementations.InternalService;
-using CommonLibrary.Repository;
+using CommonLibrary.Implementations;
+using CommonLibrary.Repositories;
 using MassTransit;
 
 namespace GatewayService.Implementations;
 
-public class ObjectRepository : IObjectRepository<IObject>
+public class ObjectRepository : IObjectRepository
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
@@ -15,12 +15,13 @@ public class ObjectRepository : IObjectRepository<IObject>
     {
         _publishEndpoint = publishEndpoint;
     }
-    public Task<IReadOnlyCollection<IObject>> GetAllAsync()
+
+    public Task<IEnumerable<IObject>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<IObject>> GetAllAsync(Expression<Func<IObject, bool>> filter)
+    public Task<IEnumerable<IObject>> GetAllAsync(Expression<Func<IObject, bool>> filter)
     {
         throw new NotImplementedException();
     }
@@ -35,10 +36,19 @@ public class ObjectRepository : IObjectRepository<IObject>
         throw new NotImplementedException();
     }
 
-    public async Task CreateAsync(IObject entity)
+    public async Task CreateAsync(IObject? entity)
     {
-        await _publishEndpoint.Publish(new CreateObject(entity));
+        if(entity is null)
+        {
+            var request = new ServiceBusRequest<Guid>();
+            var suggestedGuid = Guid.NewGuid();
+            request.Subject = suggestedGuid;
+            request.Descriptor = "Requesting object creation";
+            Console.WriteLine($"Requesting object creation with guid: {suggestedGuid}");
+            await _publishEndpoint.Publish(new CreateObject(request));
+        }
     }
+    
 
     public Task UpdateAsync(IObject entity)
     {
