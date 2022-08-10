@@ -1,12 +1,13 @@
 ﻿using System.Linq.Expressions;
 using CommonLibrary.Contracts.Gateway_Internal_Contracts;
+using CommonLibrary.Entities.InternalService;
 using CommonLibrary.Implementations.InternalService;
 using CommonLibrary.Repository;
 using MassTransit;
 
 namespace GatewayService.Implementations;
 
-public class ObjectRepository : IObjectRepository<IIObject>
+public class ObjectRepository : IObjectRepository<IObject>
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
@@ -14,42 +15,42 @@ public class ObjectRepository : IObjectRepository<IIObject>
     {
         _publishEndpoint = publishEndpoint;
     }
-    public Task<IReadOnlyCollection<IIObject>> GetAllAsync()
+    public Task<IReadOnlyCollection<IObject>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyCollection<IIObject>> GetAllAsync(Expression<Func<IIObject, bool>> filter)
+    public Task<IReadOnlyCollection<IObject>> GetAllAsync(Expression<Func<IObject, bool>> filter)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IIObject> GetAsync(Guid Id)
+    public Task<IObject> GetAsync(Guid Id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IIObject> GetAsync(Expression<Func<IIObject, bool>> filter)
+    public Task<IObject> GetAsync(Expression<Func<IObject, bool>> filter)
     {
         throw new NotImplementedException();
     }
 
-    public async Task CreateAsync(IIObject entity)
+    public async Task CreateAsync(IObject entity)
     {
         await _publishEndpoint.Publish(new CreateObject(entity));
     }
 
-    public Task UpdateAsync(IIObject entity)
+    public Task UpdateAsync(IObject entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeleteAsync(IIObject entity)
+    public Task DeleteAsync(IObject entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task SuspendAsync(IIObject entity)
+    public Task SuspendAsync(IObject entity)
     {
         throw new NotImplementedException();
     }

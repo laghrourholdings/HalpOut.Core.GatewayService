@@ -11,9 +11,9 @@ namespace GatewayService.Controllers;
 [ApiController]
 public class GatewayController : ControllerBase
 {
-    private readonly IObjectRepository<IIObject> _objectRepository;
+    private readonly IObjectRepository<IObject> _objectRepository;
     
-    public GatewayController(IObjectRepository<IIObject> objectRepository)
+    public GatewayController(IObjectRepository<IObject> objectRepository)
     {
         _objectRepository = objectRepository;
     }
@@ -33,6 +33,7 @@ public class GatewayController : ControllerBase
             Descriptor = null
         };
         await _objectRepository.CreateAsync(obj);
+        Console.WriteLine($"Sending Object {obj.Id.ToString()} created at {obj.CreationDate.ToString()} for verification...");
         return Ok($"Sending Object {obj.Id.ToString()} created at {obj.CreationDate.ToString()} for verification...");
     }
 }

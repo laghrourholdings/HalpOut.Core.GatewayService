@@ -1,16 +1,17 @@
 ﻿using CommonLibrary.Contracts.Gateway_Internal_Contracts;
+using CommonLibrary.Entities.InternalService;
 using CommonLibrary.Implementations.InternalService;
 using CommonLibrary.Repository;
 using MassTransit;
 
 namespace GatewayService.Slots;
 
-public class ObjectCreatedConsumer
+public class ObjectCreatedConsumer : IConsumer<CreateObject>
 {
     
-    private readonly IObjectRepository<IIObject> _repository;
+    private readonly IObjectRepository<IObject> _repository;
     
-    public ObjectCreatedConsumer(IObjectRepository<IIObject> repository)
+    public ObjectCreatedConsumer(IObjectRepository<IObject> repository)
     {
         _repository = repository;
     }
