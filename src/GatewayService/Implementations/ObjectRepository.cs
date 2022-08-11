@@ -2,12 +2,16 @@
 using CommonLibrary.Contracts.Gateway_Internal_Contracts;
 using CommonLibrary.Entities.InternalService;
 using CommonLibrary.Implementations;
+using CommonLibrary.Interfaces;
 using CommonLibrary.Repositories;
+using CommonLibrary.Settings;
+using Flurl;
+using Flurl.Http;
 using MassTransit;
 
 namespace GatewayService.Implementations;
 
-public class ObjectRepository : IObjectRepository
+public class ObjectRepository : IObjectRepository<IObject>
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
@@ -16,9 +20,11 @@ public class ObjectRepository : IObjectRepository
         _publishEndpoint = publishEndpoint;
     }
 
-    public Task<IEnumerable<IObject>> GetAllAsync()
+    public async Task<IEnumerable<IObject>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await WebClientSettings.InternalServiceDevURL
+            .AppendPathSegment("objects")
+            .GetJsonAsync<IEnumerable<IIObject>>();
     }
 
     public Task<IEnumerable<IObject>> GetAllAsync(Expression<Func<IObject, bool>> filter)
@@ -40,10 +46,13 @@ public class ObjectRepository : IObjectRepository
     {
         if(entity is null)
         {
-            var request = new ServiceBusRequest<Guid>();
             var suggestedGuid = Guid.NewGuid();
-            request.Subject = suggestedGuid;
-            request.Descriptor = "Requesting object creation";
+            var request = new ServiceBusRequest<Guid>
+            {
+                Subject = suggestedGuid,
+                Descriptor = $"Requesting object creation with guid: {suggestedGuid}",
+                Contract = nameof(CreateObject)
+            };
             Console.WriteLine($"Requesting object creation with guid: {suggestedGuid}");
             await _publishEndpoint.Publish(new CreateObject(request));
         }

@@ -10,9 +10,9 @@ namespace GatewayService.Controllers;
 [ApiController]
 public class GatewayController : ControllerBase
 {
-    private readonly IObjectRepository _objectRepository;
+    private readonly IObjectRepository<IObject> _objectRepository;
     
-    public GatewayController(IObjectRepository objectRepository)
+    public GatewayController(IObjectRepository<IObject> objectRepository)
     {
         _objectRepository = objectRepository;
     }

@@ -5,17 +5,17 @@ using MassTransit;
 
 namespace GatewayService.Slots;
 
-public class ObjectCreatedConsumer : IConsumer<CreateObjectResponse>
+public class GetAllObjectsConsumer : IConsumer<GetAllObjectsResponse>
 {
     
     private readonly IObjectRepository<IObject> _objectRepository;
     
-    public ObjectCreatedConsumer(IObjectRepository<IObject> objectRepository)
+    public GetAllObjectsConsumer(IObjectRepository<IObject> objectRepository)
     {
         _objectRepository = objectRepository;
     }
     
-    public async Task Consume(ConsumeContext<CreateObjectResponse> context)
+    public async Task Consume(ConsumeContext<GetAllObjectsResponse> context)
     {
         var message = context.Message.Payload;
         Console.WriteLine($"Creation for: {message.Subject.Id} created at: {message.Subject.CreationDate} COMPLETED");
