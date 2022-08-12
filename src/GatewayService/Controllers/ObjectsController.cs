@@ -1,7 +1,5 @@
-﻿using CommonLibrary.Contracts.Gateway_Internal_Contracts;
-using CommonLibrary.Entities.InternalService;
+﻿using CommonLibrary.Core;
 using CommonLibrary.Repositories;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GatewayService.Controllers;

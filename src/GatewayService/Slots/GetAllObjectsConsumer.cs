@@ -1,5 +1,5 @@
-﻿using CommonLibrary.Contracts.Gateway_Internal_Contracts;
-using CommonLibrary.Entities.InternalService;
+﻿using CommonLibrary.AspNetCore.Contracts.Gateway_Internal_Contracts;
+using CommonLibrary.Core;
 using CommonLibrary.Repositories;
 using MassTransit;
 
