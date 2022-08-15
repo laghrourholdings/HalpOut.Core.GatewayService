@@ -1,18 +1,22 @@
-﻿using CommonLibrary.Core;
-using CommonLibrary.Repositories;
+﻿using CommonLibrary.AspNetCore;
+using CommonLibrary.Core;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
-namespace GatewayService.Controllers;
+namespace GatewayService.Controllers.v1;
 
-[Route("[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 public class ObjectsController : ControllerBase
 {
     private readonly IObjectRepository<IObject> _objectRepository;
-    
-    public ObjectsController(IObjectRepository<IObject> objectRepository)
+    private readonly ILogger _logger;
+
+    public ObjectsController(IObjectRepository<IObject> objectRepository, ILogger logger)
     {
         _objectRepository = objectRepository;
+        _logger = logger;
     }
     
     

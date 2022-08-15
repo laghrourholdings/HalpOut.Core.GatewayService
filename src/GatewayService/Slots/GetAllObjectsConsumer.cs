@@ -1,6 +1,6 @@
-﻿using CommonLibrary.AspNetCore.Contracts.Gateway_Internal_Contracts;
+﻿using CommonLibrary.AspNetCore;
+using CommonLibrary.AspNetCore.Contracts;
 using CommonLibrary.Core;
-using CommonLibrary.Repositories;
 using MassTransit;
 
 namespace GatewayService.Slots;

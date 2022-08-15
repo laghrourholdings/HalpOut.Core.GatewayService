@@ -1,27 +1,36 @@
 ﻿using System.Linq.Expressions;
-using CommonLibrary.AspNetCore.Contracts.Gateway_Internal_Contracts;
+using CommonLibrary.AspNetCore;
+using CommonLibrary.AspNetCore.Contracts;
+using CommonLibrary.AspNetCore.Logging;
 using CommonLibrary.AspNetCore.ServiceBus;
 using CommonLibrary.Core;
-using CommonLibrary.Repositories;
 using CommonLibrary.Settings;
 using Flurl;
 using Flurl.Http;
 using MassTransit;
+using ILogger = Serilog.ILogger;
 
 namespace GatewayService.Implementations;
 
 public class ObjectRepository : IObjectRepository<IObject>
 {
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
-    public ObjectRepository(IPublishEndpoint publishEndpoint)
+    public ObjectRepository(
+        IPublishEndpoint publishEndpoint,
+        IConfiguration configuration,
+        ILogger logger)
     {
         _publishEndpoint = publishEndpoint;
+        _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<IObject>> GetAllAsync()
     {
-        return await WebClientSettings.InternalServiceDevURL
+        return await ServicesSettings.InternalServiceDevURL
             .AppendPathSegment("objects")
             .GetJsonAsync<IEnumerable<IIObject>>();
     }
@@ -40,6 +49,7 @@ public class ObjectRepository : IObjectRepository<IObject>
     {
         throw new NotImplementedException();
     }
+    
 
     public async Task CreateAsync(IObject? entity)
     {
@@ -52,11 +62,21 @@ public class ObjectRepository : IObjectRepository<IObject>
                 Descriptor = $"Requesting object creation with guid: {suggestedGuid}",
                 Contract = nameof(CreateObject)
             };
-            Console.WriteLine($"Requesting object creation with guid: {suggestedGuid}");
+            _logger.General($"Testing: {@request}");
+            var logContext = request.GetLogContext(_configuration, LogLevel.Information);
+            _logger.GeneralToBusLog(
+                logContext,
+                $"Requesting object creation with guid: {suggestedGuid}",
+                _publishEndpoint, new LogObjectCreate(logContext));
             await _publishEndpoint.Publish(new CreateObject(request));
+
         }
     }
-    
+
+    public Task BindLogHandle(Guid objectId, Guid logHandle)
+    {
+        throw new NotImplementedException();
+    }
 
     public Task UpdateAsync(IObject entity)
     {
