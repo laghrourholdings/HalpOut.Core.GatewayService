@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using CommonLibrary.AspNetCore;
 using CommonLibrary.AspNetCore.Contracts;
-using CommonLibrary.AspNetCore.Logging;
 using CommonLibrary.AspNetCore.ServiceBus;
+using CommonLibrary.AspNetCore.Settings;
 using CommonLibrary.Core;
 using CommonLibrary.Settings;
 using Flurl;
@@ -12,7 +12,7 @@ using ILogger = Serilog.ILogger;
 
 namespace GatewayService.Implementations;
 
-public class ObjectRepository : IObjectRepository<IObject>
+public class ObjectRepository : IObjectRepository<IIObject>
 {
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IConfiguration _configuration;
@@ -28,67 +28,62 @@ public class ObjectRepository : IObjectRepository<IObject>
         _logger = logger;
     }
 
-    public async Task<IEnumerable<IObject>> GetAllAsync()
+    public async Task<IEnumerable<IIObject>> GetAllAsync()
     {
         return await ServicesSettings.InternalServiceDevURL
             .AppendPathSegment("objects")
             .GetJsonAsync<IEnumerable<IIObject>>();
     }
 
-    public Task<IEnumerable<IObject>> GetAllAsync(Expression<Func<IObject, bool>> filter)
+    public async Task<IEnumerable<IIObject>> GetAllAsync(Expression<Func<IIObject, bool>> filter)
+    {
+        return await ServicesSettings.InternalServiceDevURL
+            .AppendPathSegment("objects")
+            .GetJsonAsync<IEnumerable<IIObject>>();
+    }
+
+    public Task<IIObject> GetAsync(Guid Id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IObject> GetAsync(Guid Id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IObject> GetAsync(Expression<Func<IObject, bool>> filter)
+    public Task<IIObject> GetAsync(Expression<Func<IIObject, bool>> filter)
     {
         throw new NotImplementedException();
     }
     
 
-    public async Task CreateAsync(IObject? entity)
+    public async Task CreateAsync(IIObject? entity)
     {
         if(entity is null)
         {
-            var suggestedGuid = Guid.NewGuid();
-            var request = new ServiceBusRequest<Guid>
+            var request = new ServiceBusMessage
             {
-                Subject = suggestedGuid,
-                Descriptor = $"Requesting object creation with guid: {suggestedGuid}",
-                Contract = nameof(CreateObject)
+                Descriptor = ServiceSettings.GetMessage($"Requesting object creation"),
+                Contract = nameof(CreateObject),
             };
-            _logger.General($"Testing: {@request}");
-            var logContext = request.GetLogContext(_configuration, LogLevel.Information);
-            _logger.GeneralToBusLog(
-                logContext,
-                $"Requesting object creation with guid: {suggestedGuid}",
-                _publishEndpoint, new LogObjectCreate(logContext));
+            _logger.Information("The following request was made: {@Request}", request);
             await _publishEndpoint.Publish(new CreateObject(request));
-
         }
     }
-
-    public Task BindLogHandle(Guid objectId, Guid logHandle)
+    
+    public Task UpdateAsync(IIObject entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateAsync(IObject entity)
+    public Task UpdateOrCreateAsync(
+        IIObject entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeleteAsync(IObject entity)
+    public Task DeleteAsync(IIObject entity)
     {
         throw new NotImplementedException();
     }
 
-    public Task SuspendAsync(IObject entity)
+    public Task SuspendAsync(IIObject entity)
     {
         throw new NotImplementedException();
     }

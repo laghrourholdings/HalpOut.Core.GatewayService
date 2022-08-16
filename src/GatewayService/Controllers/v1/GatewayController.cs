@@ -20,9 +20,9 @@ public class GatewayController : ControllerBase
             return Ok(pictureService.Upload(file));
         }
      */
-    private readonly IObjectRepository<IObject> _objectRepository;
+    private readonly IObjectRepository<IIObject> _objectRepository;
     
-    public GatewayController(IObjectRepository<IObject> objectRepository)
+    public GatewayController(IObjectRepository<IIObject> objectRepository)
     {
         _objectRepository = objectRepository;
     }

@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var logger = new LoggerConfiguration().WriteTo.Console();
 builder.Services.AddCommonLibrary(builder.Configuration, builder.Logging, logger , MyAllowSpecificOrigins);
-builder.Services.AddScoped<IObjectRepository<IObject>, ObjectRepository>();
+builder.Services.AddScoped<IObjectRepository<IIObject>, ObjectRepository>();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

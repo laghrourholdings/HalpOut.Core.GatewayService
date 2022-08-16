@@ -8,9 +8,9 @@ namespace GatewayService.Slots;
 public class GetAllObjectsConsumer : IConsumer<GetAllObjectsResponse>
 {
     
-    private readonly IObjectRepository<IObject> _objectRepository;
+    private readonly IObjectRepository<IIObject> _objectRepository;
     
-    public GetAllObjectsConsumer(IObjectRepository<IObject> objectRepository)
+    public GetAllObjectsConsumer(IObjectRepository<IIObject> objectRepository)
     {
         _objectRepository = objectRepository;
     }

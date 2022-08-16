@@ -10,10 +10,10 @@ namespace GatewayService.Controllers.v1;
 [ApiController]
 public class ObjectsController : ControllerBase
 {
-    private readonly IObjectRepository<IObject> _objectRepository;
+    private readonly IObjectRepository<IIObject> _objectRepository;
     private readonly ILogger _logger;
 
-    public ObjectsController(IObjectRepository<IObject> objectRepository, ILogger logger)
+    public ObjectsController(IObjectRepository<IIObject> objectRepository, ILogger logger)
     {
         _objectRepository = objectRepository;
         _logger = logger;
