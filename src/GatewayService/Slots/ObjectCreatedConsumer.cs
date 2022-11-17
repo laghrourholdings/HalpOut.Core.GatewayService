@@ -6,19 +6,19 @@ using ILogger = Serilog.ILogger;
 
 namespace GatewayService.Slots;
 
-public class CreateObjectResponseConsumer : IConsumer<CreateObjectResponse>
+public class ObjectCreatedConsumer : IConsumer<ObjectCreated>
 {
     
     private readonly IObjectRepository<IIObject> _objectRepository;
     private readonly ILogger _logger;
 
-    public CreateObjectResponseConsumer(IObjectRepository<IIObject> objectRepository, ILogger logger)
+    public ObjectCreatedConsumer(IObjectRepository<IIObject> objectRepository, ILogger logger)
     {
         _logger = logger;
         _objectRepository = objectRepository;
     }
     
-    public async Task Consume(ConsumeContext<CreateObjectResponse> context)
+    public async Task Consume(ConsumeContext<ObjectCreated> context)
     {
         var message = context.Message.Payload;
         _logger.Information("Creation for: {@message.Subject} COMPLETED",message.Subject);

@@ -62,7 +62,7 @@ public class ObjectRepository : IObjectRepository<IIObject>
                 Descriptor = ServiceSettings.GetMessage($"Requesting object creation"),
                 Contract = nameof(CreateObject),
             };
-            _logger.Information("The following request was made: {@Request}", request);
+            _logger.Information("Object creating requested: {@Request}", request);
             await _publishEndpoint.Publish(new CreateObject(request));
         }
     }
