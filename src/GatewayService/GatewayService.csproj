@@ -10,8 +10,8 @@
 
     <ItemGroup>
         <PackageReference Include="LH.ForYou.CommonLibrary.AspNetCore" Version="1.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.11">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -23,7 +23,11 @@
     </ItemGroup>
     
     <ItemGroup>
+      <Folder Include="Controllers\v1" />
+      <Folder Include="Implementations" />
       <Folder Include="Signals" />
+      <Folder Include="Slots\Logs" />
+      <Folder Include="Slots\Objects" />
     </ItemGroup>
 
     <ItemGroup>

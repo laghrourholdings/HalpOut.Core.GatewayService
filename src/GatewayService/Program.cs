@@ -1,6 +1,5 @@
 using CommonLibrary.AspNetCore;
 using CommonLibrary.Core;
-using GatewayService.Implementations;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var logger = new LoggerConfiguration().WriteTo.Console();
 builder.Services.AddCommonLibrary(builder.Configuration, builder.Logging, logger , MyAllowSpecificOrigins);
-builder.Services.AddScoped<IObjectRepository<IIObject>, ObjectRepository>();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
