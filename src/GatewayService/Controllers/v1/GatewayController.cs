@@ -1,6 +1,4 @@
-﻿using CommonLibrary.AspNetCore;
-using CommonLibrary.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace GatewayService.Controllers.v1;
 
@@ -20,12 +18,12 @@ public class GatewayController : ControllerBase
             return Ok(pictureService.Upload(file));
         }
      */
-    private readonly IObjectRepository<IIObject> _objectRepository;
-    
-    public GatewayController(IObjectRepository<IIObject> objectRepository)
-    {
-        _objectRepository = objectRepository;
-    }
+    // private readonly IObjectRepository<IIObject> _objectRepository;
+    //
+    // public GatewayController(IObjectRepository<IIObject> objectRepository)
+    // {
+    //     _objectRepository = objectRepository;
+    // }
     
     
 }
