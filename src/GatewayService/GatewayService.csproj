@@ -16,12 +16,9 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\..\Libraries\CommonLibrary\src\CommonLibrary.AspNetCore\CommonLibrary.AspNetCore.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Logging" />
-    </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Controllers\v1" />
     </ItemGroup>
     
 </Project>
